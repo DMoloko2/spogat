@@ -1,4 +1,4 @@
-
+<link href="http://localhost/css/for_dialog.css" rel="stylesheet" type="text/css">
   <div class="modal-dialog">
     <div class="modal-content">
       <!-- Заголовок модального окна -->
@@ -34,7 +34,9 @@
         echo "<td>Отказаться</td>";
         echo "</b></tr>";
         echo "</thead>";
+        echo "</table class='table'>";
         echo "<tbody>";
+
         for ($i= $data[1][0]->begin; $i <= $data[1][0]->end ; $i++) {
           $b=0;
           $index=0;
@@ -60,31 +62,73 @@
             }}
             if($b){
               $a= $i+1;
+              echo "<table class='table'>";
               echo "<tr>";
               echo "<td>".$i.":00 - ".$a.":00</td>";
               echo "<td>".$data[0][$index]->header."</td>";
               echo "<td>".$data[0][$index]->count_people.' / '.$data[0][$index]->max_people."</td>";
-              echo "<td><button id=".$data[0][$index]->id_event." class='btn btn-success btn_prisoed'>Присоединиться</button></td>";
+              echo "<td class='td_for_btn'>
+              <button id=".$data[0][$index]->id_event." class='btn btn-success btn-primary btn_info' type='button' class='btn btn-primary' data-toggle='collapse' data-target='#toggleSample".$data[0][$index]->id_event."' value='Элемент управления'>Информация</button>
+              </td></tr>
+              <tr>";
               echo "</tr>";
-            }
+              echo "</table class='table'>
+              <div id='toggleSample".$data[0][$index]->id_event."' class='collapse div_for_info'>
 
+              </div>
+
+              ";
+
+            }
+            /**/
             //<button data-toggle="collapse" data-target="#demo">Collapsible</button>
+
+
 
 
 
             else{
               $a=$i+1;
+              echo "<table class='table'>";
               echo "<tr>";
               echo "<td>".$i.":00 - ".$a.":00</td>";
               echo "<td></td>";
               echo "<td></td>";
-              echo "<td><button type='button' class='timet btn btn-primary' data-toggle='modal'id=".$i." data-target='#mym'>Добавить</button>"?>
+              echo "<td class='td_for_btn'><button type='button' class='timet btn btn-primary' id=".$i."   type='button' class='btn btn-primary' data-toggle='collapse' data-target='#toggleSample".$i."' value='Элемент управления'>Добавить</button>"
+/*data-toggle='modal' data-target='#mym'*/
+              ?>
                 <!-- Окно 2 -->
 
               <?php
               echo "</td>";
               echo "</tr>";
+              echo "</table class='table'>
+              <div id='toggleSample".$i."' class='collapse'>
+              <form >
 
+                <div class='input-group'><span class='input-group-addon'>Название:</span>
+                  <input id='header' type='text' class='form-control' name='msg'>
+                </div>
+
+                <div class='form-group'>
+                <label for='comment'>Описание:</label>
+                <textarea class='form-control' rows='3' id='description'></textarea>
+              </div>
+
+                <div class='input-group'><span class='input-group-addon'>Телефон:</span>
+                  <input id='tel_number' type='tel' class='form-control' name='msg'>
+                </div>
+
+                <div class='input-group'><span class='input-group-addon'>Необходимо для игры:</span>
+                  <input id='max_people' type='number' class='form-control' name='msg'>
+                </div>
+
+                <div class='input-group'><span class='input-group-addon'>Регистрируемых сейчас:</span>
+                  <input id='count_people' type='number' class='form-control' name='msg'>
+                </div>
+                  <button class='btn btn-primary dobav'>Ок</button>
+              </form>
+                    </div>";
 
             }
           }
@@ -112,59 +156,21 @@
     </div>
   </div>
   <div class="modal-body">
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal2">Открыть окно 2</button>
+
 
 <div class="empty"></div>
 </div>
 
-<div id='mym' class='modal fade' tabindex='-1' role='dialog'>
 
-<div class="modal-dialog" role="document">
-<div class="modal-content">
-<div class="modal-header">
-<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-  <span aria-hidden="true">&times;</span>
-</button>
-
-<h4 class="modal-title" >Окно 2</h4>
-</div>
-
-<div class="modal-body">
-
-<form>
-
-  <div class="input-group"><span class="input-group-addon">Название:</span>
-    <input id="header" type="text" class="form-control" name="msg">
-  </div>
-
-  <div class="form-group">
-  <label for="comment">Описание:</label>
-  <textarea class="form-control" rows="3" id="description"></textarea>
-</div>
-
-  <div class="input-group"><span class="input-group-addon">Телефон:</span>
-    <input id="tel_number" type="tel" class="form-control" name="msg">
-  </div>
-
-  <div class="input-group"><span class="input-group-addon">Необходимо для игры:</span>
-    <input id="max_people" type="number" class="form-control" name="msg">
-  </div>
-
-  <div class="input-group"><span class="input-group-addon">Регистрируемых сейчас:</span>
-    <input id="count_people" type="number" class="form-control" name="msg">
-  </div>
-
-</form>
-<button class="btn btn-primary dobav">Добавить</button>
-
-</div>
-</div>
-</div>
-</div>
 
 
 
   <script  type="text/javascript" charset="UTF-8" >
+
+
+//НЕ ВСЕГДА КОРРЕКТНО ДОБАВЛЯЕТ СОБЫТИЯ
+
+
   $(document).on('hidden.bs.modal', '.modal', function () {
     $('.modal:visible').length && $(document.body).addClass('modal-open');
 });
@@ -208,25 +214,47 @@ $.ajax({
   url: '/index.php/app/add_event',
   contentType: "application/json",
   data: {name :str},
- success: location.reload()
+ //success: location.reload()
 //  dataType: dataType
 });
 });
+
+
+
+
 $(".btn_prisoed").on('click', function(e){
   var a = $(this).attr('id');
-  //alert(a);
+  alert(a);
   $.ajax({
     type: "GET",
     url: '/index.php/app/getfulleventinfo?id_event='+a,
     contentType: "application/json",
 
 
-})
+
+
+});
 
  //  success: location.reload(),
  // dataType: dataType
 });
 
+$(".btn_info").on('click', function(e){
+  var a = $(this).attr('id');
+  //alert(a);
+  $.ajax({
+    type: "GET",
+    url: '/index.php/app/get_Full_info?id_event='+a,
+    contentType: "application/json",
+    success: function(e){
+      $('#toggleSample'+a).html(e);
 
+  }
+
+})
+
+ //  success: location.reload(),
+ // dataType: dataType
+});
 
   </script>

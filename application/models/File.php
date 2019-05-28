@@ -98,31 +98,33 @@ public function delete_event($id,$id_event)
 		$this->db->query("UPDATE event SET count_people = '$result' WHERE id_event = '$id_event'");
 	return $result;
 }
+
 public function get_full_event_info($id_event,$id)
 {
 
 	$this->load->database();
 	$temp=$this->db->query("SELECT count_people FROM event WHERE id_event = '$id_event' ")->result()[0]->count_people;
-
 	$temp++;
-
-
 	$this->db->query("UPDATE event SET count_people='$temp' WHERE id_event ='$id_event'");
 	$this->db->query("INSERT INTO who_go(id_user,id_event) VALUES ('$id','$id_event')");
 
-	  /*$this->load->database();
-		$result['eventInfoFull'] = $this->db->query("SELECT description,tel_num_org  FROM event WHERE id_event = '$id_event'")->result();
-		//print_r($id_event);
-		$result['listMember'] = $this->db->query("SELECT name,female,id_vk  FROM users WHERE   users.id_user IN (SELECT who_go.id_user FROM who_go WHERE who_go.id_event = '$id_event')")->result();
-		return $result;*/
+
 	}
+
+public function get_full_event_info_real($id_event)
+{
+	$this->load->database();
+	$result['eventInfoFull'] = $this->db->query("SELECT description,tel_num_org  FROM event WHERE id_event = '$id_event'")->result();
+	//print_r($id_event);
+	$result['listMember'] = $this->db->query("SELECT name,female,id_vk  FROM users WHERE   users.id_user IN (SELECT who_go.id_user FROM who_go WHERE who_go.id_event = '$id_event')")->result();
+	$result['id_event']=$id_event;
+	return $result;
+}
+
+
 	public function insertEvents($id_user,$header,$description,$time_begin,$tel_num_org,$max_people,$count_people,$data,$id_pl)
 	{
 		  $this->load->database();
-
-
-
-
 				$resu=$this->db->query("SELECT id_category FROM not_pay_pl WHERE not_pay_pl.id_pl='$id_pl'")->result()[0]->id_category;
 
 		$result= $this->db->query("INSERT INTO event(header,description,time_begin,tel_num_org,max_people,count_people,data,id_pl,id_category) VALUES ('$header','$description','$time_begin','$tel_num_org','$max_people','$count_people','$data',$id_pl,'$resu')");

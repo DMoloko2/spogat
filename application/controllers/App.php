@@ -66,16 +66,23 @@ public function deleteEvent()
 
 
 }
-public function getFullEventInfo()
+public function getFullEventInfo()  //функция для присоединения к событию
 {
 
 $this->load->library('session');
 $this->load->model('File');
 $this->File->get_full_event_info($this->input->get('id_event'),$this->session->id_user);
-	/*$this->load->model('File');
-	$result = $this->File->get_full_event_info($this->input->get('id_event'));
+
+}
+
+public function get_Full_info()
+{
+	$this->load->model('File');
+	$r=$this->input->get('id_event');
+	$result= $this->File->get_full_event_info_real($r);
 	//print_r($this->input->get('id_event'));
-	$this->load->view('fullEventInfo',$result);*/
+	$this->load->view('fullEventInfo',$result);
+
 }
 
 public function add_event()
